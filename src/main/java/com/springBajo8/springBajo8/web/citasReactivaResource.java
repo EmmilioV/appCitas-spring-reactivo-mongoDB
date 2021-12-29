@@ -51,6 +51,23 @@ public class citasReactivaResource {
         return this.icitasReactivaService.findByFechayHora(fecha, hora);
     }
 
+    @PutMapping("/citasReactivas/{idCita}/cancelarCita")
+    private Mono<ResponseEntity<citasDTOReactiva>> cancelAppointment(@PathVariable("idCita")String idCita){
+        citasDTOReactiva citasDTOReactiva = this.icitasReactivaService.findById(idCita).block();
+        citasDTOReactiva.setEstadoReservaCita("cancelada");
+
+        return  this.icitasReactivaService.update(idCita, citasDTOReactiva)
+                .flatMap(citasDTOReactiva1 -> Mono.just(ResponseEntity.ok(citasDTOReactiva1)))
+                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
+    }
+
+    @GetMapping("/citasReactivas/{idCita}/ConsultarMedico")
+    private Mono<String> consultDoctorWhoWillAttend(@PathVariable("idCita") String idCita){
+        citasDTOReactiva citasDTOReactiva = this.icitasReactivaService.findById(idCita).block();
+
+        return Mono.just(citasDTOReactiva.getNombreMedico() + citasDTOReactiva.getApellidosMedico());
+    }
+
     @GetMapping(value = "/citasReactivas")
     private Flux<citasDTOReactiva> findAll() {
         return this.icitasReactivaService.findAll();
