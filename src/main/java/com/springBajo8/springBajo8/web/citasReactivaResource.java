@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @RestController
 public class citasReactivaResource {
 
@@ -41,6 +44,11 @@ public class citasReactivaResource {
     @GetMapping("/citasReactivas/{idPaciente}/byidPaciente")
     private Flux<citasDTOReactiva> findAllByidPaciente(@PathVariable("idPaciente") String idPaciente) {
         return this.icitasReactivaService.findByIdPaciente(idPaciente);
+    }
+
+    @GetMapping("/citasReactivas/{fecha}/{hora}")
+    private Mono<citasDTOReactiva> findAllByFechayHora(@PathVariable("fecha")LocalDate fecha, @PathVariable("hora") String hora){
+        return this.icitasReactivaService.findByFechayHora(fecha, hora);
     }
 
     @GetMapping(value = "/citasReactivas")
