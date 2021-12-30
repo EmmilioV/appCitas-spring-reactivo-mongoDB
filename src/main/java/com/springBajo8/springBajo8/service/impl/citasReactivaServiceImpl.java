@@ -49,7 +49,7 @@ public class citasReactivaServiceImpl implements IcitasReactivaService {
 
     @Override
     public Mono<citasDTOReactiva> findByFechayHora(LocalDate fecha, String hora) {
-        return this.IcitasReactivaRepository.findByFechaReserva(fecha)
+        return this.IcitasReactivaRepository.findByFechaReservaCita(fecha)
                 .filter(citasDTOReactiva -> citasDTOReactiva.getHoraReservaCita().equals(hora))
                 .single();
     }
